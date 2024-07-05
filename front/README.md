@@ -1,7 +1,3 @@
-# drugstore
-국립중앙의료원_전국 약국 정보 조회 서비스   
-전국 약국 정보를 조회하기 위한 서비스로서 주소별, 진료요일별 및 시간대로 조회할 수 있다
-
 # front
 
 This template should help get you started developing with Vue 3 in Vite.
