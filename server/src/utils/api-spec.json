@@ -36,6 +36,13 @@
             "description": "닉네임",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "이메일",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

@@ -1,8 +1,19 @@
 {
   "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "baseUrl": "./",  // 현재 프로젝트를 기준으로
+    "moduleResolution": "node",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "~/*": ["./*"],
+      "@/*": ["./src/*"]  // baseURL을 기준으로 @를 사용하게 되면 src 폴더 밑에 파일들을 확인할 수 있다.
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
   },
   "exclude": ["node_modules", "dist"]
 }
