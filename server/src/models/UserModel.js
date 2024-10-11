@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import mongoose from 'mongoose';
 import schemaOptions from './schemaOptions';
 
@@ -19,6 +20,7 @@ const userSchema = new mongoose.Schema(
 			unique: true, // 중복 허용 여부
 			trim: true, // 공백 삭제
 			maxlength: 50,
+			primary: true,
 		},
 		password: {
 			type: String,

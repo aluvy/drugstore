@@ -117,6 +117,37 @@
         }
       }
     },
+    "/logout": {
+      "get": {
+        "tags": [
+          "/logout"
+        ],
+        "description": "로그아웃 하는 API 입니다.",
+        "responses": {
+          "200": {
+            "description": "[완료] 로그아웃이 완료되었습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "[에러] 비밀번호가 맞지 않아 로그아웃에 실패하였습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "500": {
+            "description": "[에러] 서버에 문제가 있어 로그아웃 하지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },
     "/posts": {
       "get": {
         "tags": [
