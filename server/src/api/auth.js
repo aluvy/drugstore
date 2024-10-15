@@ -136,15 +136,15 @@ router.post('/signup', (req, res) => {
 // 	// res.redirect('/');
 // });
 
-app.get('/logout', authenticateUser, (req, res) => {
-	//미들웨어에서 가져옴
-	User.findOneAndUpdate({ username: req.body.username }, { token: '' }, (err, user) => {
-		if (err) return res.json({ success: false, err });
-		return res.status(200).send({
-			success: true,
-		});
-	});
-});
+// app.get('/logout', authenticateUser, (req, res) => {
+// 	//미들웨어에서 가져옴
+// 	User.findOneAndUpdate({ username: req.body.username }, { token: '' }, (err, user) => {
+// 		if (err) return res.json({ success: false, err });
+// 		return res.status(200).send({
+// 			success: true,
+// 		});
+// 	});
+// });
 
 // router.get('/logout', async function (req, res, next) {
 //   var session = req.session;

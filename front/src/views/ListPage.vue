@@ -1,15 +1,19 @@
 <template>
   <div>
-    ListPage
+    
+    검색
+    리스트
+    
+
   </div>
 </template>
 
 <script>
-  export default {
-    
-  }
+export default {
+  
+}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
