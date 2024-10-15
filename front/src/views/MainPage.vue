@@ -8,29 +8,29 @@
       </div>
     </div>
 
-    <div id="pagination">
-      <v-pagination
-        v-model="page"
-        :length="15"
-        rounded="circle"
-        :total-visible="5"
-      ></v-pagination>
-    </div>
+    <PageNation :page="page" :length="length" />
 
   </div>
 </template>
 
 <script>
+import PageNation from '@/components/PageNation.vue'
+
 export default {
   name: 'MainPage',
 
+  components: {
+    PageNation,
+  },
+
   data: () => ({
     page: 1,
+    length: 15,
   }),
 }
 </script>
 
-<style>
+<style scoped>
   .search-wrap {
     margin: 1.2rem;
   }
@@ -59,25 +59,5 @@ export default {
 
 
 
-  #pagination {
-    margin: 2rem 0 0;
-  }
-
-  #pagination .v-pagination__item,
-  #pagination .v-pagination__first,
-  #pagination .v-pagination__prev,
-  #pagination .v-pagination__next,
-  #pagination .v-pagination__last {
-    margin: 0;
-  }
-
-  #pagination .v-btn--icon.v-btn--density-default {
-    width: 3.6rem;
-    height: 3.6rem;  
-    font-size: 1.4rem;
-  }
-  #pagination .v-btn--icon.v-btn--density-default[ellipsis="true"] {
-    width: 2rem;
-    font-size: 1.2rem;
-  }
+  
 </style>
