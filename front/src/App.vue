@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <PageHeader />
+    <PageHeader :path="path" />
 
     <v-main class="container" :class="{ wide: path === '/main'}">
       <router-view v-slot="{ Component }">
@@ -8,14 +8,13 @@
       </router-view>
     </v-main>
 
-    <PageFooter />    
+    <PageFooter />
   </v-app>
 </template>
 
 <script>
 import PageHeader from '@/components/PageHeader.vue'
 import PageFooter from '@/components/PageFooter.vue';
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'App',
@@ -23,7 +22,6 @@ export default {
   components: {
     PageHeader,
     PageFooter,
-    HelloWorld,
   },
 
   computed: {

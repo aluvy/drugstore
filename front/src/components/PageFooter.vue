@@ -1,7 +1,7 @@
 <template>
   <div class="footer-wrap">
     <v-footer id="footer">
-      &copy; copyright
+      &copy; copyright all rights reserved
     </v-footer>
   </div>
 </template>
@@ -19,11 +19,12 @@ export default {
 
 <style scoped>
   .footer-wrap {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     text-align: center;
   }
   .v-footer {
-    padding: 1.4rem;
-    color: #787878;
+    display: block;
+    color: #999;
+    padding: 5rem 1.2rem 3rem;
   }
 </style>
