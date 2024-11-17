@@ -1,8 +1,8 @@
 <template>
   <div id="pagination">
     <v-pagination
-      :v-model="page"
-      :length="length"
+      :v-model="pageNo"
+      :length="totalCount"
       rounded="circle"
       :total-visible="5"
     ></v-pagination>
@@ -10,17 +10,22 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'PageNation',
+  computed: {
+    // ...mapState(['products']),
+    ...mapGetters(['getPageNo, getNumOfRows, getTotalCount']),
+  },
 
   data: () => ({
     //
   }),
 
   props: {
-    page: Number,
-    length: Number,
+    pageNo: Number,
+    totalCount: Number,
   },
 }
 </script>

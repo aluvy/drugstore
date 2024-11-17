@@ -148,6 +148,114 @@
         }
       }
     },
+    "/products": {
+      "get": {
+        "tags": [
+          "/products"
+        ],
+        "description": "약품정보 목록을 가져오는 API입니다",
+        "parameters": [
+          {
+            "name": "pageNo",
+            "description": "페이지 번호",
+            "type": "string"
+          },
+          {
+            "name": "numOfRows",
+            "description": "한 페이지 결과 수",
+            "type": "string"
+          },
+          {
+            "name": "entpName",
+            "description": "업체명",
+            "type": "string"
+          },
+          {
+            "name": "itemName",
+            "description": "제품명",
+            "type": "string"
+          },
+          {
+            "name": "itemSeq",
+            "description": "품목기준코드",
+            "type": "string"
+          },
+          {
+            "name": "efcyQesitm",
+            "description": "이 약의 효능은 무엇입니까?",
+            "type": "string"
+          },
+          {
+            "name": "useMethodQesitm",
+            "description": "이 약은 어떻게 사용합니까?",
+            "type": "string"
+          },
+          {
+            "name": "atpnWarnQesitm",
+            "description": "이 약을 사용하기 전에 반드시 알아야 할 내용은 무엇입니까?",
+            "type": "string"
+          },
+          {
+            "name": "atpnQesitm",
+            "description": "이 약의 사용상 주의사항은 무엇입니까?",
+            "type": "string"
+          },
+          {
+            "name": "intrcQesitm",
+            "description": "이 약을 사용하는 동안 주의해야 할 약 또는 음식은 무엇입니까?",
+            "type": "string"
+          },
+          {
+            "name": "seQesitm",
+            "description": "이 약은 어떤 이상반응이 나타날 수 있습니까?",
+            "type": "string"
+          },
+          {
+            "name": "depositMethodQesitm",
+            "description": "이 약은 어떻게 보관해야 합니까?",
+            "type": "string"
+          },
+          {
+            "name": "openDe",
+            "description": "공개일자",
+            "type": "string"
+          },
+          {
+            "name": "updateDe",
+            "description": "수정일자",
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": "응답데이터 형식(xml/json) Default:xml",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "[완료]게시물을 받아왔습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "[에러] 게시물을 받아올 수 없습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "500": {
+            "description": "[에러] 서버에 문제가 있어 게시물을 받아오지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },
     "/posts": {
       "get": {
         "tags": [
@@ -393,6 +501,59 @@
         },
         "createdAt": {
           "type": "date-time"
+        }
+      }
+    },
+    "Products": {
+      "type": "object",
+      "properties": {
+        "ServiceKey": {
+          "type": "string"
+        },
+        "pageNo": {
+          "type": "string"
+        },
+        "numOfRows": {
+          "type": "string"
+        },
+        "entpName": {
+          "type": "string"
+        },
+        "itemName": {
+          "type": "string"
+        },
+        "itemSeq": {
+          "type": "string"
+        },
+        "efcyQesitm": {
+          "type": "string"
+        },
+        "useMethodQesitm": {
+          "type": "string"
+        },
+        "atpnWarnQesitm": {
+          "type": "string"
+        },
+        "atpnQesitm": {
+          "type": "string"
+        },
+        "intrcQesitm": {
+          "type": "string"
+        },
+        "seQesitm": {
+          "type": "string"
+        },
+        "depositMethodQesitm": {
+          "type": "string"
+        },
+        "openDe": {
+          "type": "string"
+        },
+        "updateDe": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
         }
       }
     },

@@ -38,16 +38,7 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			trim: true,
 			unique: true, // 중복을 허용하지 않는다.
-			// minlength: 50,
 		},
-		// createdAt: {
-		// 	type: Date,
-		// 	default: Date.now,
-		// },
-		// updatedAt: {
-		// 	type: Date,
-		// 	default: Date.now,
-		// },
 		token: {
 			type: String,
 		},

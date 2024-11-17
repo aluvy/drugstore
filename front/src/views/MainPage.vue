@@ -8,9 +8,9 @@
       </div>
     </div>
 
-    <DrugList :items="items" />
+    <DrugList />
 
-    <PageNation :page="page" :length="length" />
+    <PageNation />
 
     <DrugModal :modal="modal" />
 
@@ -22,6 +22,8 @@ import PageNation from '@/components/PageNation.vue'
 import DrugList from '@/components/DrugList.vue'
 import DrugModal from '@/components/DrugModal.vue'
 
+import { fetchProducts } from '@/api/products.js'
+
 export default {
   name: 'MainPage',
 
@@ -32,45 +34,45 @@ export default {
   },
 
   data: () => ({
-    page: 1,
-    length: 15,
+    pageNo: 1,
+    numOfRows: 10, // 1페이지에 약품 아이템 갯수
+    totalCount: 0,  // total
+    products: [],
+
     modal: {
       show: false,
       item: {}
     },
-    items: [
-        {
-          thumbnail: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          title: 'Brunch this weekend?',
-          desc: `<span class="text-primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-          wish: false,
-        },
-        {
-          thumbnail: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          title: 'Summer BBQ',
-          desc: `<span class="text-primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
-          wish: false,
-        },
-        {
-          thumbnail: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          title: 'Oui oui',
-          desc: '<span class="text-primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
-          wish: false,
-        },
-        {
-          thumbnail: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          title: 'Birthday gift',
-          desc: '<span class="text-primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-          wish: false,
-        },
-        {
-          thumbnail: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Recipe to try',
-          desc: '<span class="text-primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-          wish: false,
-        },
-      ],
   }),
+
+  methods: {
+    async fetchProducts() {
+      try {
+        this.$store.commit('setLoading', { loading: true });
+        const res = await fetchProducts();
+        const { items, pageNo, numOfRows, totalCount } = res.data.data;
+        this.products = items;
+        this.pageNo = pageNo;
+        this.numOfRows = numOfRows;
+        this.totalCount = Math.floor(totalCount / numOfRows);
+
+        // this.$store.commit('setLoading', { loading: false });
+
+        // store에 products 등록
+        this.$store.commit('setProducts', { products: items });
+
+
+      } catch (e) {
+        console.log(e);
+        // this.logMessage = e.message;
+      } finally {
+        this.$store.commit('setLoading', { loading: false });
+      }
+    }
+  },
+  created() {
+    this.fetchProducts();
+  }
 }
 </script>
 

@@ -3,8 +3,17 @@
 
     <header id="header" v-if="path === '/main'">
       <v-btn variant="plain" icon="mdi-menu" aria-label="menu" class="btn-gnb"></v-btn>
-      <h1><router-link to="/main">{{ title }}</router-link></h1>
-      <v-btn variant="plain" icon="mdi-account" aria-label="mypage" class="btn-mypage"></v-btn>
+      <h1><router-link to="/main">{{ this.$store.getters.getTitle }}</router-link></h1>
+
+      <template v-if="isLogin">
+      <!-- 로그인 한 상태 -->
+      </template>
+      <template v-else>
+        <!-- 로그인 하지 않은 상태 -->
+        <v-btn variant="plain" icon="mdi-account" aria-label="mypage" class="btn-mypage" @clic="$router.push(mypageLink)"></v-btn>
+        <router-link :to="mypageLink">TIL</router-link>
+      </template>
+
     </header>
 
     <header id="header-mypage" v-else-if="path === '/mypage'">
@@ -15,18 +24,37 @@
     <header id="header-member" v-else>
       <v-btn variant="plain" icon="mdi-home" aria-label="home" class="btn-home"></v-btn>
     </header>
-  
+    
   </div>
 </template>
 
 <script>
+import { deleteCookie } from '@/utils/cookies.js'
 
 export default {
   name: 'PageHeader',
-
+  computed: {
+    isLogin() {
+      return this.$store.getters.isLogin;
+    },
+    mypageLink() {
+      return this.$store.getters.isLogin ? '/mypage' : '/login';
+    },
+    logoLink() {
+      return this.$store.getters.isLogin ? '/main' : '/login';
+    }
+  },
   data: () => ({
-    title: '온라인 의약품 정보 검색 서비스',
   }),
+  methods: {
+    logout() {
+      this.$store.commit('clearUserinfo');
+      this.$store.commit('clearToken');
+      deleteCookie('til_auth');
+      deleteCookie('til_user');
+      this.$router.push('/');
+    }
+  },
   props: {
     path: String,
   },

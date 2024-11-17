@@ -1,13 +1,14 @@
 <template>
   <div class="list-wrap">
     <ul id="list">
-      <li v-for="(item, i) in items" :key="i" :data-idx="i">
-        <div class="thumbnail"><img :src="item.thumbnail" :alt="item.title"></div>
+      <li v-for="(product, i) in getProducts" :key="i" :data-idx="i">
+        <div class="thumbnail"><img :src="product.itemImage" :alt="product.itemName"></div>
         <div class="info-wrap">
-          <p class="ttl">{{ item.title }}</p>
-          <p class="desc">{{ item.desc }}</p>
+          <p class="ttl">{{ product.itemName }}</p>
+          <p class="desc">{{ product.efcyQesitm }}</p>
         </div>
         <div class="ico">
+          <!-- TODO: 좋아요 버튼 -->
           <!-- mdi-star-outline -->
           <!-- mdi-star -->
           <!-- <v-btn variant="plain" :icon="{ true: 'mdi-star-outline' }"></v-btn> -->
@@ -16,21 +17,28 @@
         </div>
       </li>
     </ul>
+    <!-- {{ this.$store.getters.getProducts }} -->
+      <!-- {{ getProducts }} -->
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'DrugList',
+  computed: {
+    // ...mapState(['products']),
+    ...mapGetters(['getProducts']),
+  },
 
   data: () => ({
-    //
+    // test: this.$store.getters.getProducts,
   }),
 
-  props: {
-    items: Array,
-  },
+  // props: {
+  //   products: Array,
+  // },
 }
 </script>
 
@@ -49,12 +57,13 @@ export default {
   }
 
   #list li .thumbnail {
-    flex: 0 0 5rem;
+    flex: 0 0 10rem;
   }
 
   #list li .thumbnail img {
     width: 100%;
-    border-radius: 100%;
+    border-radius: 1rem;
+    font-size: 1rem;
   }
   
   #list li .info-wrap {

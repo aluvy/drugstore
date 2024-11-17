@@ -1,4 +1,6 @@
 // libs
+require('dotenv').config(); // .env 파일 로드
+
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -10,10 +12,14 @@ import chalk from 'chalk';
 // api
 import auth from './api/auth.js';
 import posts from './api/posts.js';
+import products from './api/products.js';
 import docs from './utils/api-doc.js';
 
 // utils
 import { authenticateUser } from './utils/auth.js';
+
+// ENV
+const MONGODB_URL = process.env.MONGODB_URL;
 
 // mongo db
 const db = mongoose.connection;
@@ -21,7 +27,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // mongo DB를 nodeJS에 연결
 mongoose
-	.connect('mongodb+srv://test:1234@cluster0.rkmziez.mongodb.net/?retryWrites=true&w=majority', {
+	.connect(MONGODB_URL, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useCreateIndex: true,
@@ -47,6 +53,7 @@ app.use(morgan('dev')); // log request
 // express routers
 app.use('/', auth);
 app.use('/posts', authenticateUser, posts);
+app.use('/products', products);
 
 // api docs
 app.use('/api', docs);
