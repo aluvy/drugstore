@@ -96,3 +96,7 @@ option[value=""][disabled] {display:none;} */
 
 .blind, .hidden{ position: absolute; clip: rect(0 0 0 0); width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; white-space: nowrap; }
 .dimmed { position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0, 0.6); }
+
+.scrollRock {
+  overflow: hidden;
+}

@@ -8,17 +8,17 @@
       </div>
     </div>
 
-    <DrugList />
+    <DrugList @showProductDetail="showProductDetail" />
 
-    <PageNation />
+    <PagiNation @movepage="movepage" />
 
-    <DrugModal :modal="modal" />
+    <DrugModal :modalShow="modalShow" @hideProductDetail="hideProductDetail" />
 
   </div>
 </template>
 
 <script>
-import PageNation from '@/components/PageNation.vue'
+import PagiNation from '@/components/PagiNation.vue'
 import DrugList from '@/components/DrugList.vue'
 import DrugModal from '@/components/DrugModal.vue'
 
@@ -28,39 +28,59 @@ export default {
   name: 'MainPage',
 
   components: {
-    PageNation,
+    PagiNation,
     DrugList,
     DrugModal
   },
-
+  watch: {
+    modalShow(current, before) {
+      if(current) {
+        document.querySelector("html").classList.add("scrollRock");
+      } else {
+        document.querySelector("html").classList.remove("scrollRock");
+      }
+    }
+  },
   data: () => ({
     pageNo: 1,
-    numOfRows: 10, // 1페이지에 약품 아이템 갯수
-    totalCount: 0,  // total
-    products: [],
+    numOfRows: 10,  // 고정값
 
-    modal: {
-      show: false,
-      item: {}
-    },
+    modalShow: false,
   }),
 
   methods: {
+    movepage(page) {
+      this.pageNo = page;
+      this.fetchProducts();
+    },
+    showProductDetail() {
+      this.modalShow = true;
+    },
+    hideProductDetail() {
+      this.modalShow = false;
+    },
     async fetchProducts() {
       try {
         this.$store.commit('setLoading', { loading: true });
-        const res = await fetchProducts();
-        const { items, pageNo, numOfRows, totalCount } = res.data.data;
-        this.products = items;
-        this.pageNo = pageNo;
-        this.numOfRows = numOfRows;
-        this.totalCount = Math.floor(totalCount / numOfRows);
+        const params = {
+          pageNo: this.pageNo,
+          numOfRows: this.numOfRows
+        }
+        const res = await fetchProducts(params);
+        let { items, pageNo, numOfRows, totalCount } = res.data.data;
 
-        // this.$store.commit('setLoading', { loading: false });
+        items = [...items].map( item => {          
+          if(item.itemImage == null) item.itemImage = '/public/no-image.png';
+
+          return item;
+        });
+
+        totalCount = Math.floor(totalCount / numOfRows);
 
         // store에 products 등록
-        this.$store.commit('setProducts', { products: items });
-
+        this.updateProducts(items)
+        this.updatePageNo(pageNo);
+        this.updateTotalCount(totalCount);
 
       } catch (e) {
         console.log(e);
@@ -68,6 +88,15 @@ export default {
       } finally {
         this.$store.commit('setLoading', { loading: false });
       }
+    },
+    updateProducts(items) {
+      this.$store.commit('setProducts', { products: items });
+    },
+    updatePageNo(pageNo) {
+      this.$store.commit('setPageNo', pageNo)
+    },
+    updateTotalCount(totalCount) {
+      this.$store.commit('setTotalCount', totalCount)
     }
   },
   created() {
@@ -102,8 +131,4 @@ export default {
     height: 4rem;
     font-size: 1.4rem;
   }
-
-
-
-  
 </style>

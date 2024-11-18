@@ -6,7 +6,7 @@
       
       <v-form
         v-model="form"
-        @submit.prevent="onSubmit"
+        @submit.prevent="loginSubmit"
       >
         <v-text-field
           v-model="username"
@@ -30,6 +30,7 @@
 
       </v-form>
 
+      {{ logMessage }}
       <ul class="utils">
         <li>
           <RouterLink to="/join">회원가입</RouterLink>
@@ -58,20 +59,61 @@ export default {
     username: null,
     password: null,
     loading: false,
+    logMessage: '',
   }),
 
+  // methods: {
+  //   onSubmit () {
+  //     console.log(this.username, this.password)
+  //     if (!this.form) return
+
+  //     this.loading = true
+
+  //     setTimeout(() => (this.loading = false), 2000)
+  //   },
+  //   required (v) {
+  //     return !!v || 'Field is required'
+  //   },
+  // },
+
+
   methods: {
-    onSubmit () {
-      if (!this.form) return
-
-      this.loading = true
-
-      setTimeout(() => (this.loading = false), 2000)
-    },
     required (v) {
       return !!v || 'Field is required'
     },
-  },
+    async loginSubmit() {
+      try {
+        const userData = {
+          username: this.username,
+          password: this.password
+        }
+        await this.$store.dispatch('LOGIN', { userData: userData });
+        // const res = await loginUser(userData);
+        
+        // this.$store.commit('setUserinfo', { user: res.data.user });
+        // this.$store.commit('setToken', { token: res.data.token });
+        // saveAuthToCookie(res.data.token);
+        // saveUserToCookie(res.data.user.username);
+
+        // 메인페이지로 이동
+        this.$router.push('/main');
+
+      } catch (e) {
+        // console.log(e);
+        this.logMessage = e.response.data;
+      } finally {
+        console.log('finally');
+        this.initForm();
+      }
+
+    },
+    initForm() {
+      this.username = '';
+      this.password = '';
+    }
+  }
+
+
 }
 </script>
 

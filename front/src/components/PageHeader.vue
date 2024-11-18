@@ -2,38 +2,42 @@
   <div class="header-wrap">
 
     <header id="header" v-if="path === '/main'">
-      <v-btn variant="plain" icon="mdi-menu" aria-label="menu" class="btn-gnb"></v-btn>
-      <h1><router-link to="/main">{{ this.$store.getters.getTitle }}</router-link></h1>
+      <v-btn variant="plain" icon="mdi-menu" aria-label="menu" class="btn-gnb" @click="$router.push('/main')"></v-btn>
+      <h1><router-link to="/main">{{ title }}</router-link></h1>
+
+      <v-btn variant="plain" icon="mdi-account" aria-label="mypage" class="btn-mypage" @click="$router.push(mypageLink)"></v-btn>
 
       <template v-if="isLogin">
       <!-- 로그인 한 상태 -->
       </template>
       <template v-else>
         <!-- 로그인 하지 않은 상태 -->
-        <v-btn variant="plain" icon="mdi-account" aria-label="mypage" class="btn-mypage" @clic="$router.push(mypageLink)"></v-btn>
-        <router-link :to="mypageLink">TIL</router-link>
+        <!-- <v-btn variant="plain" icon="mdi-account" aria-label="mypage" class="btn-mypage" @click="$router.push(mypageLink)"></v-btn>
+        <router-link :to="mypageLink">TIL</router-link> -->
       </template>
 
     </header>
 
     <header id="header-mypage" v-else-if="path === '/mypage'">
-      <v-btn variant="plain" icon="mdi-home" aria-label="home" class="btn-home"></v-btn>
-      <h1><router-link to="/main">{{ title }}</router-link></h1>
+      <v-btn variant="plain" icon="mdi-home" aria-label="home" class="btn-home" @click="$router.push('/main')"></v-btn>
+      <h1><router-link to="/main">마이페이지</router-link></h1>
     </header>
 
     <header id="header-member" v-else>
-      <v-btn variant="plain" icon="mdi-home" aria-label="home" class="btn-home"></v-btn>
+      <v-btn variant="plain" icon="mdi-home" aria-label="home" class="btn-home" @click="$router.push('/main')"></v-btn>
     </header>
     
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { deleteCookie } from '@/utils/cookies.js'
 
 export default {
   name: 'PageHeader',
   computed: {
+    ...mapState(['title']),
     isLogin() {
       return this.$store.getters.isLogin;
     },
@@ -90,6 +94,9 @@ export default {
   }
 
   #header-mypage {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background: #777
   }
 

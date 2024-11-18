@@ -12,9 +12,11 @@ export default new Vuex.Store({
 		token: getAuthFromCookie() || '',
 
 		pageNo: 1,
-		numOfRows: 10,
-		totalCount: 0,
+		numOfRows: 10, // 한 페이지 결과 수 (고정값)
+		totalCount: null,
 		products: [],
+
+		productsDetail: {},
 	},
 	getters: {
 		getTitle: state => state.title,
@@ -29,6 +31,8 @@ export default new Vuex.Store({
 		getNumOfRows: state => state.numOfRows,
 		getTotalCount: state => state.totalCount,
 		getProducts: state => state.products,
+
+		getProductsDetail: state => state.productsDetail,
 	},
 	mutations: {
 		setLoading(state, payload) {
@@ -53,13 +57,27 @@ export default new Vuex.Store({
 			state.token = '';
 		},
 
+		// product
 		setProducts(state, payload) {
 			state.products = payload.products;
-			console.log('state', state, 'payload', payload);
+		},
+		setProductsDetail(state, payload) {
+			console.log('setProductsDetail', payload);
+			state.productsDetail = payload;
+		},
+
+		// page
+		setPageNo(state, payload) {
+			state.pageNo = payload;
+		},
+		setTotalCount(state, payload) {
+			state.totalCount = payload;
 		},
 	},
 	actions: {
 		async LOGIN(context, payload) {
+			console.log('LOGIN', payload);
+			// test, 1111
 			const res = await loginUser(payload.userData);
 
 			context.commit('setUserinfo', { user: res.data.user });

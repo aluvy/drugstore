@@ -1,44 +1,59 @@
 <template>
   <div class="list-wrap">
     <ul id="list">
-      <li v-for="(product, i) in getProducts" :key="i" :data-idx="i">
-        <div class="thumbnail"><img :src="product.itemImage" :alt="product.itemName"></div>
+      <li v-for="(product, i) in products" :key="i" :data-idx="i">
+        <div class="thumbnail">
+          <a href="#" @click="showProductDetail(product);">
+            <img :src="product.itemImage" :alt="product.itemName">
+          </a>
+        </div>
         <div class="info-wrap">
-          <p class="ttl">{{ product.itemName }}</p>
-          <p class="desc">{{ product.efcyQesitm }}</p>
+          <a href="#" @click="showProductDetail(product);">
+            <p class="company">{{ product.entpName }}</p>
+            <p class="ttl">{{ product.itemName }}</p>
+            <p class="desc">{{ product.efcyQesitm }}</p>
+          </a>
         </div>
         <div class="ico">
-          <!-- TODO: 좋아요 버튼 -->
-          <!-- mdi-star-outline -->
-          <!-- mdi-star -->
-          <!-- <v-btn variant="plain" :icon="{ true: 'mdi-star-outline' }"></v-btn> -->
-          <!-- <v-btn variant="plain" icon="mdi-star-outline"></v-btn> -->
-          <!-- <v-btn variant="plain" icon="mdi-account" aria-label="mypage" class="btn-mypage"></v-btn> -->
+          <v-btn variant="plain" size="x-small" class="bookmark" @click="addBookmark($event, product)"></v-btn>
         </div>
       </li>
     </ul>
-    <!-- {{ this.$store.getters.getProducts }} -->
-      <!-- {{ getProducts }} -->
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'DrugList',
   computed: {
-    // ...mapState(['products']),
-    ...mapGetters(['getProducts']),
+    ...mapState(['products', 'productsDetail']),
   },
+  methods: {
+    showProductDetail(productDetail) {
+      this.setProductDetail(productDetail);
+      this.$emit('showProductDetail');
+    },
+    setProductDetail(productDetail) {
+      this.$store.commit('setProductsDetail', productDetail);
+    },
+    addBookmark($event, product) {
+      $event.target.classList
 
-  data: () => ({
-    // test: this.$store.getters.getProducts,
-  }),
+      const isActive = $event.target.classList.contains('active');
+      if(isActive) {
+        $event.target.classList.remove('active');
+      } else {
+        $event.target.classList.add('active');
+      }
+      
+      console.log(product);
+      // TODO: bookmark
 
-  // props: {
-  //   products: Array,
-  // },
+      // console.log($event.target.classList.contains('active'), product);
+    }
+  }
 }
 </script>
 
@@ -48,6 +63,7 @@ export default {
   }
 
   #list li {
+    position: relative;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -62,7 +78,7 @@ export default {
 
   #list li .thumbnail img {
     width: 100%;
-    border-radius: 1rem;
+    border-radius: 0.6rem;
     font-size: 1rem;
   }
   
@@ -70,12 +86,42 @@ export default {
     flex: 1 1 auto;
   }
 
+  #list li .info-wrap .company {
+    font-size: 1.2rem;
+    color: #009688;
+  }
+
   #list li .info-wrap .ttl {
     color: #222;
+    margin-top: 1rem;
   }
 
   #list li .info-wrap .desc {
     color: #777;
     font-size: 1.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  #list li .ico {
+    position: absolute;
+    right: 0;
+    top: 1rem;
+  }
+
+  #list li .ico .bookmark {
+    display: block;
+    width: 3.6rem;
+    height: 3.6rem;
+    min-width: 3.6rem;
+    border-radius: 3.6rem;
+    background: url(/public/ico-bookmark.svg) center / 2rem no-repeat;
+  }
+
+  #list li .ico .bookmark.active {
+    background-image: url(/public/ico-bookmark-on.svg);
   }
 </style>

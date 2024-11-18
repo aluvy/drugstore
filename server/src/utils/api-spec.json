@@ -117,37 +117,6 @@
         }
       }
     },
-    "/logout": {
-      "get": {
-        "tags": [
-          "/logout"
-        ],
-        "description": "로그아웃 하는 API 입니다.",
-        "responses": {
-          "200": {
-            "description": "[완료] 로그아웃이 완료되었습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          },
-          "401": {
-            "description": "[에러] 비밀번호가 맞지 않아 로그아웃에 실패하였습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          },
-          "500": {
-            "description": "[에러] 서버에 문제가 있어 로그아웃 하지 못했습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          }
-        }
-      }
-    },
     "/products": {
       "get": {
         "tags": [
@@ -256,12 +225,20 @@
         }
       }
     },
-    "/posts": {
+    "/bookmarks": {
       "get": {
         "tags": [
-          "/posts"
+          "/bookmarks"
         ],
-        "description": "사용자가 등록한 게시물의 목록을 가져오는 API입니다",
+        "description": "사용자가 북마크 한 약품의 목록을 가져오는 API입니다",
+        "parameters": [
+          {
+            "name": "username",
+            "description": "북마크 한 유저네임",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "[완료]게시물을 받아왔습니다",
@@ -288,22 +265,40 @@
       },
       "post": {
         "tags": [
-          "/posts"
+          "/bookmarks"
         ],
-        "description": "게시물을 한개 생성하는 API입니다",
+        "description": "북마크를 한개 생성하는 API입니다",
         "parameters": [
           {
-            "name": "title",
-            "in": "formData",
-            "description": "게시물 제목",
+            "name": "itemSeq",
+            "description": "약품 고유번호",
             "required": true,
             "type": "string"
           },
           {
-            "name": "contents",
-            "in": "formData",
-            "description": "게시물 내용",
+            "name": "username",
+            "description": "북마크 한 유저네임",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "itemName",
+            "description": "약품 이름",
+            "type": "string"
+          },
+          {
+            "name": "itemImage",
+            "description": "약품 이미지 주소",
+            "type": "string"
+          },
+          {
+            "name": "entpName",
+            "description": "약품 회사명",
+            "type": "string"
+          },
+          {
+            "name": "efcyQesitm",
+            "description": "약품 설명",
             "type": "string"
           }
         ],
@@ -330,152 +325,26 @@
             }
           }
         }
-      }
-    },
-    "/posts/{_id}": {
-      "get": {
-        "tags": [
-          "/posts"
-        ],
-        "description": "특정 게시물을 조회하는 API입니다",
-        "operationId": "getPostById",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "_id",
-            "in": "path",
-            "description": "게시글 고유 아이디",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/Posts"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "[완료]게시물이 조회되었습니다",
-            "schema": {
-              "$ref": "#/definitions/Posts"
-            },
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          },
-          "401": {
-            "description": "[에러]인증 토큰이 유효하지 않아 게시물을 받아올 수 없습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          },
-          "500": {
-            "description": "[에러]서버에 문제가 있어 게시물을 생성하지 못했습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "/posts"
-        ],
-        "description": "특정 게시물을 수정하는 API입니다",
-        "operationId": "updatePost",
-        "parameters": [
-          {
-            "name": "_id",
-            "in": "path",
-            "description": "수정할 게시물의 아이디",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "수정할 게시글의 정보",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Posts"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "[완료]게시물이 수정되었습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          },
-          "400": {
-            "description": "[에러]게시물이 이미 존재합니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          },
-          "404": {
-            "description": "[에러]게시글을 찾을 수 없습니다"
-          },
-          "500": {
-            "description": "[에러]서버에 문제가 있어 게시물을 생성하지 못했습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          }
-        }
       },
       "delete": {
         "tags": [
-          "/posts"
+          "/bookmarks"
         ],
-        "description": "특정 게시물을 삭제하는 API입니다",
-        "operationId": "deletePost",
+        "description": "특정 북마크를 한 개 삭제하는 API입니다.",
         "parameters": [
           {
-            "name": "_id",
-            "in": "path",
-            "description": "삭제할 게시물의 아이디",
+            "name": "bizrno",
+            "description": "약품 고유번호",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "description": "북마크 한 유저네임",
             "required": true,
             "type": "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "[완료]게시물이 삭제되었습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          },
-          "400": {
-            "description": "[에러]게시물을 삭제할 수 없습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          },
-          "404": {
-            "description": "[에러]게시글을 찾을 수 없습니다"
-          },
-          "500": {
-            "description": "[에러]서버에 문제가 있어 게시물을 삭제하지 못했습니다",
-            "content": {
-              "application/json": {},
-              "application/xml": {}
-            }
-          }
-        }
+        ]
       }
     }
   },
@@ -557,16 +426,28 @@
         }
       }
     },
-    "Posts": {
+    "Bookmarks": {
       "type": "object",
       "properties": {
         "_id": {
           "type": "string"
         },
-        "title": {
+        "bizrno": {
           "type": "string"
         },
-        "contents": {
+        "username": {
+          "type": "string"
+        },
+        "itemName": {
+          "type": "string"
+        },
+        "itemImage": {
+          "type": "string"
+        },
+        "entpName": {
+          "type": "string"
+        },
+        "efcyQesitm": {
           "type": "string"
         }
       }

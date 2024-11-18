@@ -1,14 +1,14 @@
 // libs
 import { Router } from 'express';
 // modules
-import PostModel from '../models/PostModel.js';
+import BookmarkModel from '../models/BookmarkModel.js';
 
 // router init
 const router = Router();
 
 router.post('/', async (req, res) => {
 	try {
-		const doc = await PostModel.create({
+		const doc = await BookmarkModel.create({
 			...req.body,
 			createdBy: req.user._id,
 		});
@@ -24,14 +24,14 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
 	try {
-		const docs = await PostModel.find({
+		const docs = await BookmarkModel.find({
 			createdBy: req.user._id,
 		})
 			.lean()
 			.exec();
 
 		res.status(200).json({
-			posts: docs,
+			bookmarks: docs,
 		});
 	} catch (error) {
 		console.error(error);
@@ -41,7 +41,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
 	try {
-		const doc = await PostModel.findOne({
+		const doc = await BookmarkModel.findOne({
 			createdBy: req.user._id,
 			_id: req.params.id,
 		})
@@ -61,7 +61,7 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
 	try {
-		const updatedDoc = await PostModel.findOneAndUpdate(
+		const updatedDoc = await BookmarkModel.findOneAndUpdate(
 			{
 				createdBy: req.user._id,
 				_id: req.params.id,
@@ -85,7 +85,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
 	try {
-		const removed = await PostModel.findOneAndRemove({
+		const removed = await BookmarkModel.findOneAndRemove({
 			createdBy: req.user._id,
 			_id: req.params.id,
 		})

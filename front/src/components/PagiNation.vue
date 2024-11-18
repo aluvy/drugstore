@@ -5,28 +5,24 @@
       :length="totalCount"
       rounded="circle"
       :total-visible="5"
+      @update:modelValue="onPageChange"
     ></v-pagination>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'PageNation',
   computed: {
-    // ...mapState(['products']),
-    ...mapGetters(['getPageNo, getNumOfRows, getTotalCount']),
+    ...mapState(['pageNo', 'numOfRows', 'totalCount']),
   },
-
-  data: () => ({
-    //
-  }),
-
-  props: {
-    pageNo: Number,
-    totalCount: Number,
-  },
+  methods: {
+    onPageChange(page) {
+      this.$emit('movepage', page);
+    }
+  }
 }
 </script>
 
