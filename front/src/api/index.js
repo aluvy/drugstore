@@ -16,13 +16,28 @@ export const user = createInstance();
  * GET - posts {id}
  * DELETE - posts {id}
  */
+// function createInstanceAuth(url) {
+// 	const instance = axios.create({
+// 		baseURL: `${import.meta.env.VITE_API_URL}${url}`,
+// 	});
+// 	return setInterceptors(instance);
+// }
+// export const post = createInstanceAuth('/posts');
+
+// token 값이 필요한 API 함수
+/**
+ * CREATE - posts
+ * POST - posts
+ * GET - posts {id}
+ * DELETE - posts {id}
+ */
 function createInstanceAuth(url) {
 	const instance = axios.create({
 		baseURL: `${import.meta.env.VITE_API_URL}${url}`,
 	});
 	return setInterceptors(instance);
 }
-export const post = createInstanceAuth('/posts');
+export const bookmark = createInstanceAuth('/bookmarks');
 
 // products
 function getProducts() {

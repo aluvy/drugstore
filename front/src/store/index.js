@@ -14,9 +14,12 @@ export default new Vuex.Store({
 		pageNo: 1,
 		numOfRows: 10, // 한 페이지 결과 수 (고정값)
 		totalCount: null,
-		products: [],
 
+		products: [],
 		productsDetail: {},
+
+		bookmarks: [],
+		isBookmarks: [],
 	},
 	getters: {
 		getTitle: state => state.title,
@@ -30,9 +33,11 @@ export default new Vuex.Store({
 		getPageNo: state => state.pageNo,
 		getNumOfRows: state => state.numOfRows,
 		getTotalCount: state => state.totalCount,
-		getProducts: state => state.products,
 
+		getProducts: state => state.products,
 		getProductsDetail: state => state.productsDetail,
+
+		getBookmarks: state => state.bookmarks,
 	},
 	mutations: {
 		setLoading(state, payload) {
@@ -49,10 +54,13 @@ export default new Vuex.Store({
 		setToken(state, payload) {
 			state.token = payload.token;
 		},
+
+		// logout
 		clearUserinfo(state) {
 			state.username = '';
 			state.nickname = '';
 		},
+		// logout
 		clearToken(state) {
 			state.token = '';
 		},
@@ -72,6 +80,14 @@ export default new Vuex.Store({
 		},
 		setTotalCount(state, payload) {
 			state.totalCount = payload;
+		},
+
+		// bookmark
+		setBookMarks(state, payload) {
+			state.bookmarks = payload;
+		},
+		setIsBookMarks(state, payload) {
+			state.isBookmarks = payload;
 		},
 	},
 	actions: {

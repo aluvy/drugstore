@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { registerUser } from '@/api/user.js';
 
 export default {
   name: 'JoinPage',
@@ -69,19 +70,40 @@ export default {
     email: null,
     password: null,
     loading: false,
+
+    logMessage: '',
   }),
 
   methods: {
-    onSubmit () {
-      if (!this.form) return
+    // onSubmit () {
+    //   if (!this.form) return
 
-      this.loading = true
+    //   this.loading = true
 
-      setTimeout(() => (this.loading = false), 2000)
-    },
+    //   setTimeout(() => (this.loading = false), 2000)
+    // },
     required (v) {
       return !!v || 'Field is required'
     },
+
+    async onSubmit() {
+      const userData = {
+        username: this.username,
+        password: this.password,
+        nickname: this.nickname,
+      };
+      const res = await registerUser(userData);
+
+      this.logMessage = `${res.data.username}님 가입되었습니다.`;
+      this.initForm();
+    },
+    initForm() {
+      this.username = '';
+      this.password = '';
+      this.nickname = '';
+    }
+
+
   },
 }
 </script>

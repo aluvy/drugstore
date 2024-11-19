@@ -1,9 +1,9 @@
 function saveAuthToCookie(value) {
-	document.cookie = `til_auth=${value}`;
+	document.cookie = `drug_auth=${value}`;
 }
 
 function saveUserToCookie(value) {
-	document.cookie = `til_user=${value}`;
+	document.cookie = `drug_user=${value}`;
 }
 
 function getAuthFromCookie() {

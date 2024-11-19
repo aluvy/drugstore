@@ -1,7 +1,7 @@
 <template>
   <div class="list-wrap">
-    <ul id="list" v-if="products.length">
-      <li v-for="(product, i) in products" :key="i" :data-idx="i">
+    <ul id="list" v-if="bookmarks.length">
+      <li v-for="(product, i) in bookmarks" :key="i" :data-idx="i">
         <div class="thumbnail">
           <a href="javascript:;" @click="showProductDetail(product);">
             <img :src="product.itemImage" :alt="product.itemName">
@@ -16,36 +16,25 @@
         </div>
         <!-- TODO: bookmark active 처리 -->
         <div class="ico">
-          <v-btn variant="plain" size="x-small" class="bookmark" @click="addBookmark($event, product)"></v-btn>
+          <v-btn variant="plain" size="x-small" class="bookmark" @click="removeBookmark($event, product)"></v-btn>
         </div>
       </li>
     </ul>
     <div id="nodata" v-else>
-        리스트가 없습니다.
+      리스트가 없습니다.
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { addBookmark, deleteBookmark } from '@/api/bookmarks.js';
 
 export default {
-  name: 'DrugList',
+  name: 'BookmarkList',
   computed: {
-    ...mapState(['products', 'productsDetail', 'bookmarks']),
-  },
-  watch: {
-    modalShow(current, before) {
-      if(current) {
-        document.querySelector("html").classList.add("scrollRock");
-      } else {
-        document.querySelector("html").classList.remove("scrollRock");
-      }
-    }
+    ...mapState(['bookmarks', 'productsDetail', 'isBookmarks']),
   },
   data: () => ({
-    logMessage: '',
     // isBookmark: [],
   }),
   methods: {
@@ -56,20 +45,16 @@ export default {
     setProductDetail(productDetail) {
       this.$store.commit('setProductsDetail', productDetail);
     },
-
-    // 북마크 등록 & 삭제
-    async addBookmark($event, product) {
-      $event.target.classList
-
+    removeBookmark($event, product) {
+      const result = confirm('북마크를 삭제하시겠습니까?');
+      console.log(result);
       const isActive = $event.target.classList.contains('active');
       if(isActive) {
         $event.target.classList.remove('active');
-        await deleteBookmark(product.itemSeq);
       } else {
         $event.target.classList.add('active');
-        await addBookmark(product);
-      }
-    },
+      }   
+    }
   }
 }
 </script>

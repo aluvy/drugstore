@@ -97,7 +97,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #777
+    background: #2e3535
   }
 
   #header-member .btn-home {

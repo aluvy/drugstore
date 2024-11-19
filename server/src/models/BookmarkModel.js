@@ -1,28 +1,23 @@
 import mongoose from 'mongoose';
-import schemaOptions from './schemaOptions';
 
 const bookmarkSchema = new mongoose.Schema(
 	{
-		itemSeq: {
+		atpnQesitm: {
 			type: String,
-			required: true,
+			// required: true,
 			trim: true,
-			maxlength: 50,
+			// maxlength: 50,
 		},
-		username: {
+		atpnWarnQesitm: {
 			type: String,
-			required: true,
+			// required: true,
 			trim: true, // 공백 삭제
 		},
-		itemName: {
+		bizrno: {
 			type: String,
 			trim: true,
 		},
-		itemImage: {
-			type: String,
-			trim: true,
-		},
-		entpName: {
+		depositMethodQesitm: {
 			type: String,
 			trim: true,
 		},
@@ -30,10 +25,53 @@ const bookmarkSchema = new mongoose.Schema(
 			type: String,
 			trim: true,
 		},
+		entpName: {
+			type: String,
+			trim: true,
+		},
+		intrcQesitm: {
+			type: String,
+			trim: true,
+		},
+		itemImage: {
+			type: String,
+			trim: true,
+		},
+		itemName: {
+			type: String,
+			trim: true,
+		},
+		itemSeq: {
+			type: String,
+			required: true,
+			trim: true,
+		},
+		openDe: {
+			type: String,
+			trim: true,
+		},
+		seQesitm: {
+			type: String,
+			trim: true,
+		},
+		updateDe: {
+			type: String,
+			trim: true,
+		},
+		useMethodQesitm: {
+			type: String,
+			trim: true,
+		},
+		createdBy: {
+			type: mongoose.SchemaTypes.ObjectId,
+			ref: 'Users',
+			required: true,
+		},
 	},
-	schemaOptions
+	{ timestamps: true }
 );
 
+// bookmarkSchema.index({ Users: 1, title: 1 }, { unique: true });
 const BookmarkModel = mongoose.model('Bookmarks', bookmarkSchema);
 
 export default BookmarkModel;

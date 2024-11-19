@@ -6,22 +6,7 @@ import BookmarkModel from '../models/BookmarkModel.js';
 // router init
 const router = Router();
 
-router.post('/', async (req, res) => {
-	try {
-		const doc = await BookmarkModel.create({
-			...req.body,
-			createdBy: req.user._id,
-		});
-		res.status(201).json({ data: doc });
-	} catch (error) {
-		console.log(error);
-		if (error.code === 11000) {
-			return res.status(400).send({ message: 'Duplicated Data', error });
-		}
-		res.status(400).send({ message: 'sth wrong', error });
-	}
-});
-
+// 북마크 목록 조회
 router.get('/', async (req, res) => {
 	try {
 		const docs = await BookmarkModel.find({
@@ -39,55 +24,31 @@ router.get('/', async (req, res) => {
 	}
 });
 
-router.get('/:id', async (req, res) => {
+// 북마크 추가
+router.post('/', async (req, res) => {
 	try {
-		const doc = await BookmarkModel.findOne({
+		const doc = await BookmarkModel.create({
+			...req.body,
 			createdBy: req.user._id,
-			_id: req.params.id,
-		})
-			.lean()
-			.exec();
-
-		if (!doc) {
-			return res.status(400).json({ message: 'The data is not found' });
-		}
-
-		res.status(200).json({ ...doc });
+		});
+		res.status(201).json({ data: doc });
 	} catch (error) {
-		console.error(error);
-		res.status(400).json({ message: 'sth wrong', error });
+		console.log(error);
+		if (error.code === 11000) {
+			return res.status(400).send({ message: 'Duplicated Data', error });
+		}
+		res.status(400).send({ message: 'sth wrong', error });
 	}
 });
 
-router.put('/:id', async (req, res) => {
-	try {
-		const updatedDoc = await BookmarkModel.findOneAndUpdate(
-			{
-				createdBy: req.user._id,
-				_id: req.params.id,
-			},
-			req.body,
-			{ new: true }
-		)
-			.lean()
-			.exec();
-
-		if (!updatedDoc) {
-			return res.status(400).json({ message: 'cannot update the data' });
-		}
-
-		res.status(200).json({ ...updatedDoc });
-	} catch (error) {
-		console.error(error);
-		res.status(400).json({ message: 'sth wrong', error });
-	}
-});
-
+// 북마크 삭제
 router.delete('/:id', async (req, res) => {
+	// console.log('req.params.itemSeq', req);
 	try {
 		const removed = await BookmarkModel.findOneAndRemove({
 			createdBy: req.user._id,
-			_id: req.params.id,
+			// _id: req.params.id,
+			itemSeq: req.params.id,
 		})
 			.lean()
 			.exec();

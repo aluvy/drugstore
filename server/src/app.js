@@ -25,6 +25,8 @@ const MONGODB_URL = process.env.MONGODB_URL;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+mongoose.set('useFindAndModify', false);
+
 // mongo DB를 nodeJS에 연결
 mongoose
 	.connect(MONGODB_URL, {

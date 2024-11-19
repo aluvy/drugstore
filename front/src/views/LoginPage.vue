@@ -62,20 +62,6 @@ export default {
     logMessage: '',
   }),
 
-  // methods: {
-  //   onSubmit () {
-  //     console.log(this.username, this.password)
-  //     if (!this.form) return
-
-  //     this.loading = true
-
-  //     setTimeout(() => (this.loading = false), 2000)
-  //   },
-  //   required (v) {
-  //     return !!v || 'Field is required'
-  //   },
-  // },
-
 
   methods: {
     required (v) {
@@ -88,15 +74,8 @@ export default {
           password: this.password
         }
         await this.$store.dispatch('LOGIN', { userData: userData });
-        // const res = await loginUser(userData);
-        
-        // this.$store.commit('setUserinfo', { user: res.data.user });
-        // this.$store.commit('setToken', { token: res.data.token });
-        // saveAuthToCookie(res.data.token);
-        // saveUserToCookie(res.data.user.username);
 
-        // 메인페이지로 이동
-        this.$router.push('/main');
+        this.$router.push('/mypage');
 
       } catch (e) {
         // console.log(e);

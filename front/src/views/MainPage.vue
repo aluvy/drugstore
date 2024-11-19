@@ -22,15 +22,18 @@ import PagiNation from '@/components/PagiNation.vue'
 import DrugList from '@/components/DrugList.vue'
 import DrugModal from '@/components/DrugModal.vue'
 
+import { mapState } from 'vuex';
 import { fetchProducts } from '@/api/products.js'
 
 export default {
   name: 'MainPage',
-
   components: {
     PagiNation,
     DrugList,
     DrugModal
+  },
+  computed: {
+    ...mapState(['bookmarks', 'products']),
   },
   watch: {
     modalShow(current, before) {
@@ -74,13 +77,30 @@ export default {
 
           return item;
         });
-
+        
         totalCount = Math.floor(totalCount / numOfRows);
 
         // store에 products 등록
-        this.updateProducts(items)
+        this.updateProducts(items);
         this.updatePageNo(pageNo);
         this.updateTotalCount(totalCount);
+
+        // console.log('bookmarks', this.bookmarks);
+
+        let bookmarkItemSeq = [];
+        [...this.bookmarks].forEach( item => {
+          bookmarkItemSeq.push(item.itemSeq);
+        });
+        // console.log('bookmarkItemSeq', bookmarkItemSeq);
+
+        const isBookmarks = [...this.products].map( item => {
+          if (bookmarkItemSeq.includes(item.itemSeq)){
+            return true;
+          } else {
+            return false;
+          }
+        });
+        this.$store.commit('setIsBookMarks', isBookmarks);
 
       } catch (e) {
         console.log(e);
@@ -101,6 +121,9 @@ export default {
   },
   created() {
     this.fetchProducts();
+  },
+  updated() {
+    console.log('updated');
   }
 }
 </script>
