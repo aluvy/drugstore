@@ -11,12 +11,6 @@ const routes = [
 		component: () => import('@/views/MainPage.vue'),
 		meta: { auth: true, title: 'main page' },
 	},
-	// {
-	// 	path: '/list',
-	// 	name: 'ListPage',
-	// 	component: () => import('@/views/ListPage.vue'),
-	// 	meta: { auth: true, title: 'list page' },
-	// },
 	{
 		path: '/login',
 		name: 'loginPage',
@@ -28,12 +22,6 @@ const routes = [
 		name: 'joinPage',
 		component: () => import('@/views/JoinPage.vue'),
 		meta: { auth: true, title: 'join page' },
-	},
-	{
-		path: '/pw',
-		name: 'pwPage',
-		component: () => import('@/views/PwPage.vue'),
-		meta: { auth: true, title: 'pw page' },
 	},
 	{
 		path: '/mypage',

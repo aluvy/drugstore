@@ -71,17 +71,10 @@ export default {
     password: null,
     loading: false,
 
-    logMessage: '',
+    // logMessage: '',
   }),
 
   methods: {
-    // onSubmit () {
-    //   if (!this.form) return
-
-    //   this.loading = true
-
-    //   setTimeout(() => (this.loading = false), 2000)
-    // },
     required (v) {
       return !!v || 'Field is required'
     },
@@ -91,10 +84,14 @@ export default {
         username: this.username,
         password: this.password,
         nickname: this.nickname,
+        email: this.email,
       };
       const res = await registerUser(userData);
+      const result = res.status == 200 ? true : false;
 
-      this.logMessage = `${res.data.username}님 가입되었습니다.`;
+      if(result) {
+        this.$router.push('/main');
+      }
       this.initForm();
     },
     initForm() {

@@ -1,157 +1,64 @@
 <template>
   <div>
-    
-    <div class="search-wrap">
-      <div id="search">
-        <input type="text" class="search-input" placeholder="검색어를 입력하세요">
-        <v-btn variant="plain" icon="mdi-magnify" aria-label="search" class="search-btn"></v-btn>
-      </div>
-    </div>
-
-    <DrugList @showProductDetail="showProductDetail" />
-
+    <DrugSearch @setSearchString="setSearchString" />
+    <DrugList />
     <PagiNation @movepage="movepage" />
-
-    <DrugModal :modalShow="modalShow" @hideProductDetail="hideProductDetail" />
-
+    <DrugModal />
   </div>
 </template>
 
 <script>
-import PagiNation from '@/components/PagiNation.vue'
+import DrugSearch from '@/components/DrugSearch.vue'
 import DrugList from '@/components/DrugList.vue'
 import DrugModal from '@/components/DrugModal.vue'
+import PagiNation from '@/components/PagiNation.vue'
 
 import { mapState } from 'vuex';
-import { fetchProducts } from '@/api/products.js'
 
 export default {
   name: 'MainPage',
   components: {
-    PagiNation,
+    DrugSearch,
     DrugList,
-    DrugModal
+    DrugModal,
+    PagiNation,
   },
   computed: {
-    ...mapState(['bookmarks', 'products']),
-  },
-  watch: {
-    modalShow(current, before) {
-      if(current) {
-        document.querySelector("html").classList.add("scrollRock");
-      } else {
-        document.querySelector("html").classList.remove("scrollRock");
-      }
-    }
+    ...mapState(['bookmarks', 'products', 'modalShow', 'numOfRows']),
   },
   data: () => ({
     pageNo: 1,
-    numOfRows: 10,  // 고정값
-
-    modalShow: false,
+    searchString: '',
   }),
 
   methods: {
     movepage(page) {
       this.pageNo = page;
-      this.fetchProducts();
+      this.setProducts();
     },
-    showProductDetail() {
-      this.modalShow = true;
+    setSearchString(searchString) {
+      this.searchString = searchString;
+      this.setProducts();
     },
-    hideProductDetail() {
-      this.modalShow = false;
-    },
-    async fetchProducts() {
-      try {
-        this.$store.commit('setLoading', { loading: true });
-        const params = {
-          pageNo: this.pageNo,
-          numOfRows: this.numOfRows
-        }
-        const res = await fetchProducts(params);
-        let { items, pageNo, numOfRows, totalCount } = res.data.data;
-
-        items = [...items].map( item => {          
-          if(item.itemImage == null) item.itemImage = '/public/no-image.png';
-
-          return item;
-        });
-        
-        totalCount = Math.floor(totalCount / numOfRows);
-
-        // store에 products 등록
-        this.updateProducts(items);
-        this.updatePageNo(pageNo);
-        this.updateTotalCount(totalCount);
-
-        // console.log('bookmarks', this.bookmarks);
-
-        let bookmarkItemSeq = [];
-        [...this.bookmarks].forEach( item => {
-          bookmarkItemSeq.push(item.itemSeq);
-        });
-        // console.log('bookmarkItemSeq', bookmarkItemSeq);
-
-        const isBookmarks = [...this.products].map( item => {
-          if (bookmarkItemSeq.includes(item.itemSeq)){
-            return true;
-          } else {
-            return false;
-          }
-        });
-        this.$store.commit('setIsBookMarks', isBookmarks);
-
-      } catch (e) {
-        console.log(e);
-        // this.logMessage = e.message;
-      } finally {
-        this.$store.commit('setLoading', { loading: false });
+    async setProducts() {
+      const params = {
+        pageNo: this.pageNo,
+        numOfRows: this.numOfRows,
+        itemName: this.searchString
       }
+      // console.log(params);
+      this.$store.dispatch('FETCH_PRODUCTS', params);
     },
-    updateProducts(items) {
-      this.$store.commit('setProducts', { products: items });
-    },
-    updatePageNo(pageNo) {
-      this.$store.commit('setPageNo', pageNo)
-    },
-    updateTotalCount(totalCount) {
-      this.$store.commit('setTotalCount', totalCount)
-    }
   },
   created() {
-    this.fetchProducts();
+    this.setProducts();
   },
   updated() {
-    console.log('updated');
+    // console.log('MainPage updated!');
+    this.setProducts();
   }
 }
 </script>
 
 <style scoped>
-  .search-wrap {
-    margin: 1.2rem;
-  }
-
-  #search {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #ddd;
-  }
-
-  .search-input {
-    flex: 1 1 auto;
-    align-self: stretch;
-    font-size: 1.6rem;
-    padding:0 1.6rem;
-    outline: none;
-  }
-
-  .v-btn--icon.v-btn--density-default.search-btn {
-    flex: 0 0 4rem;
-    width: 4rem;
-    height: 4rem;
-    font-size: 1.4rem;
-  }
 </style>

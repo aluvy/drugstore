@@ -3,7 +3,11 @@ import { user } from './index.js';
 
 // 회원가입 API
 function registerUser(userData) {
-	return user.post('/signup', userData); // promise return
+	try {
+		return user.post('/signup', userData); // promise return
+	} catch (e) {
+		console.log(e);
+	}
 }
 
 // 로그인 API

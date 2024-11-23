@@ -5,24 +5,22 @@
         <img src="/public/no-image.png" alt="">
       </div>
       <div class="user-info">
-        <p><strong>{{ $store.getters.getUsername }}</strong> is logged</p>
+        <p><strong>{{ username }}</strong> is logged</p>
         <v-btn variant="tonal" size="small" @click="logout">logout</v-btn>
       </div>
     </div>
     
     <div class="bookmark-wrap">
       <h3>나의 의약품</h3>
-      <BookmarkList @showProductDetail="showProductDetail" />
+      <BookmarkList />
     </div>
 
-    <DrugModal :modalShow="modalShow" @hideProductDetail="hideProductDetail" />
+    <DrugModal />
 
   </div>
 </template>
 
 <script>
-import { deleteCookie } from '@/utils/cookies.js'
-import { fetchBookmarks } from '@/api/bookmarks.js'
 import { mapState } from 'vuex';
 
 import BookmarkList from '@/components/BookmarkList.vue'
@@ -35,44 +33,19 @@ export default {
     DrugModal
   },
   computed: {
-    ...mapState(['bookmarks', 'productsDetail']),
+    ...mapState(['bookmarks', 'productsDetail', 'username']),
   },
-  data: () => ({
-    modalShow: false,
-  }),
   methods: {
-    showProductDetail() {
-      this.modalShow = true;
-    },
-    hideProductDetail() {
-      this.modalShow = false;
-    },
-    logout() {
-      this.$store.commit('clearUserinfo');
-      this.$store.commit('clearToken');
-      deleteCookie('drug_auth');
-      deleteCookie('drug_user');
+    async logout() {
+      this.$store.dispatch('LOGOUT');
       this.$router.push('/');
     },
-    async fetchBookmarks() {
-      try {
-        this.$store.commit('setLoading', { loading: true });
-        const res = await fetchBookmarks();
-
-        console.log(res);
-
-        this.$store.commit('setBookMarks', res.data.bookmarks);
-        // this.posts = res.data.posts;
-      } catch (e) {
-        console.log(e);
-        // this.logMessage = e.message;
-      } finally {
-        this.$store.commit('setLoading', { loading: false });
-      }
-    }
   },
   created() {
-    this.fetchBookmarks();
+    this.$store.dispatch('FETCH_BOOKMARKS');
+  },
+  updated() {
+    this.$store.dispatch('FETCH_BOOKMARKS');
   }
 }
 </script>

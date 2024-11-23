@@ -1,11 +1,8 @@
-/* eslint-disable prettier/prettier */
-// libs
 import bcryptjs from 'bcryptjs';
 import { Router } from 'express';
 
 // modules
-// import passport from '../passport.js';
-import { newToken, authenticateUser } from '../utils/auth.js';
+import { newToken } from '../utils/auth.js';
 import UserModel from '../models/UserModel.js';
 
 // router init
@@ -56,11 +53,11 @@ router.post('/login', (req, res) => {
 
 router.post('/signup', (req, res) => {
 	const { username, password, nickname, email } = req.body;
+	console.log('req.body', req.body);
 	// encrypt password
 	// NOTE: 10 is saltround which is a cost factor
 	bcryptjs.hash(password, 10, (error, hashedPassword) => {
 		if (error) {
-			console.log(error);
 			return res.status(500).json({
 				error,
 			});

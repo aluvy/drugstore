@@ -3,12 +3,12 @@
     <ul id="list" v-if="bookmarks.length">
       <li v-for="(product, i) in bookmarks" :key="i" :data-idx="i">
         <div class="thumbnail">
-          <a href="javascript:;" @click="showProductDetail(product);">
+          <a href="javascript:;" @click="modalShow(product);">
             <img :src="product.itemImage" :alt="product.itemName">
           </a>
         </div>
         <div class="info-wrap">
-          <a href="javascript:;" @click="showProductDetail(product);">
+          <a href="javascript:;" @click="modalShow(product);">
             <p class="company">{{ product.entpName }}</p>
             <p class="ttl">{{ product.itemName }}</p>
             <p class="desc">{{ product.efcyQesitm }}</p>
@@ -16,7 +16,7 @@
         </div>
         <!-- TODO: bookmark active 처리 -->
         <div class="ico">
-          <v-btn variant="plain" size="x-small" class="bookmark" @click="removeBookmark($event, product)"></v-btn>
+          <v-btn variant="plain" size="x-small" class="bookmark active" @click="removeBookmark($event, product)"></v-btn>
         </div>
       </li>
     </ul>
@@ -34,26 +34,16 @@ export default {
   computed: {
     ...mapState(['bookmarks', 'productsDetail', 'isBookmarks']),
   },
-  data: () => ({
-    // isBookmark: [],
-  }),
   methods: {
-    showProductDetail(productDetail) {
-      this.setProductDetail(productDetail);
-      this.$emit('showProductDetail');
-    },
-    setProductDetail(productDetail) {
+    modalShow(productDetail) {
       this.$store.commit('setProductsDetail', productDetail);
+      this.$store.commit('setModalShow', true);
     },
-    removeBookmark($event, product) {
+    async removeBookmark($event, product) {
       const result = confirm('북마크를 삭제하시겠습니까?');
-      console.log(result);
-      const isActive = $event.target.classList.contains('active');
-      if(isActive) {
-        $event.target.classList.remove('active');
-      } else {
-        $event.target.classList.add('active');
-      }   
+      if(!result) return;
+
+      await this.$store.dispatch('DELETE_BOOKMARKS', product);
     }
   }
 }
@@ -125,6 +115,7 @@ export default {
 
   #list li .ico .bookmark.active {
     background-image: url(/public/ico-bookmark-on.svg);
+    opacity: 1;
   }
 
   #nodata {

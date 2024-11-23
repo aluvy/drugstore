@@ -30,13 +30,9 @@
 
       </v-form>
 
-      {{ logMessage }}
       <ul class="utils">
         <li>
           <RouterLink to="/join">회원가입</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/join">비밀번호 찾기</RouterLink>
         </li>
       </ul>
 
@@ -49,41 +45,26 @@
 
 export default {
   name: 'LoginPage',
-
-  components: {
-    
-  },
-
   data: () => ({
     form: false,
     username: null,
     password: null,
     loading: false,
-    logMessage: '',
   }),
-
-
   methods: {
     required (v) {
       return !!v || 'Field is required'
     },
     async loginSubmit() {
-      try {
-        const userData = {
-          username: this.username,
-          password: this.password
-        }
-        await this.$store.dispatch('LOGIN', { userData: userData });
 
-        this.$router.push('/mypage');
-
-      } catch (e) {
-        // console.log(e);
-        this.logMessage = e.response.data;
-      } finally {
-        console.log('finally');
-        this.initForm();
+      const userData = {
+        username: this.username,
+        password: this.password
       }
+      const result = await this.$store.dispatch('LOGIN', { userData: userData });
+
+      if(result) this.$router.push('/mypage');
+      this.initForm();
 
     },
     initForm() {
@@ -91,8 +72,6 @@ export default {
       this.password = '';
     }
   }
-
-
 }
 </script>
 

@@ -3,7 +3,7 @@
     <div class="modal-wrap">
       <div class="modal-header">
         <h2>{{ productsDetail.itemName }}</h2>
-        <v-btn variant="plain" icon="mdi-close" aria-label="close" class="btn-close" @click="$emit('hideProductDetail')"></v-btn>
+        <v-btn variant="plain" icon="mdi-close" aria-label="close" class="btn-close" @click="modalClose()"></v-btn>
       </div>
       <div class="modal-body-photo">
         <div class="photo">
@@ -75,11 +75,13 @@ import { mapState } from 'vuex';
 export default {
   name: 'DrugList',
   computed: {
-    ...mapState(['productsDetail']),
+    ...mapState(['productsDetail', 'modalShow']),
   },
-  props: {
-    modalShow: Boolean,
-  },
+  methods: {
+    modalClose() {
+      this.$store.commit('setModalShow', false);
+    }
+  }
 }
 </script>
 
@@ -124,10 +126,6 @@ export default {
 
   .modal-body {
     padding: 2rem;
-  }
-
-  .modal-body .product-info {
-    
   }
 
   .modal-body .product-info .entpName {
@@ -176,5 +174,4 @@ export default {
     color: #777;
     padding-top: 1.2rem;
   }
-
 </style>

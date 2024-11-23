@@ -10,10 +10,6 @@
 
 export default {
   name: 'PageFooter',
-
-  data: () => ({
-    //
-  }),
 }
 </script>
 

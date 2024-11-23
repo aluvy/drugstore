@@ -2,16 +2,6 @@
 import mongoose from 'mongoose';
 import schemaOptions from './schemaOptions';
 
-/**
- * user_id ==> _id, 자동생성
- * login_id ==> username
- * password
- * nickname
- * email
- * created_at ==> createdAt, 자동생성
- * updated_at ==> updatedAt TODO: 요소 체크
- */
-
 const userSchema = new mongoose.Schema(
 	{
 		username: {
@@ -25,26 +15,29 @@ const userSchema = new mongoose.Schema(
 		password: {
 			type: String,
 			required: true,
-			minlength: 10,
+			// trim: true,
+			// minlength: 10,
 		},
 		nickname: {
 			type: String,
-			required: true,
-			trim: true,
+			// required: true,
+			// trim: true,
 			// minlength: 10,
 		},
 		email: {
 			type: String,
-			required: true,
+			// required: true,
 			trim: true,
 			unique: true, // 중복을 허용하지 않는다.
 		},
-		token: {
-			type: String,
-		},
-		tokenExp: {
-			type: Number,
-		},
+		insertedDate: { type: Date, default: Date.now },
+
+		// token: {
+		// 	type: String,
+		// },
+		// tokenExp: {
+		// 	type: Number,
+		// },
 	},
 	schemaOptions
 );

@@ -1,73 +1,65 @@
 <template>
   <div class="list-wrap">
+    
     <ul id="list" v-if="products.length">
-      <li v-for="(product, i) in products" :key="i" :data-idx="i">
+      <li v-for="(product, i) in products" :key="i" :data-idx="i" :data-bizrno="product.bizrno">
         <div class="thumbnail">
-          <a href="javascript:;" @click="showProductDetail(product);">
+          <a href="javascript:;" @click="modalShow(product);">
             <img :src="product.itemImage" :alt="product.itemName">
           </a>
         </div>
         <div class="info-wrap">
-          <a href="javascript:;" @click="showProductDetail(product);">
+          <a href="javascript:;" @click="modalShow(product);">
             <p class="company">{{ product.entpName }}</p>
             <p class="ttl">{{ product.itemName }}</p>
             <p class="desc">{{ product.efcyQesitm }}</p>
           </a>
         </div>
+
         <!-- TODO: bookmark active 처리 -->
         <div class="ico">
-          <v-btn variant="plain" size="x-small" class="bookmark" @click="addBookmark($event, product)"></v-btn>
+          <v-btn variant="plain" size="x-small" :class="{ bookmark: true, active: product.bookmark }" @click="setBookmark($event, product)"></v-btn>
         </div>
       </li>
     </ul>
+
     <div id="nodata" v-else>
         리스트가 없습니다.
     </div>
+    
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { addBookmark, deleteBookmark } from '@/api/bookmarks.js';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   name: 'DrugList',
   computed: {
     ...mapState(['products', 'productsDetail', 'bookmarks']),
+    ...mapGetters(['isLogin']),
   },
-  watch: {
-    modalShow(current, before) {
-      if(current) {
-        document.querySelector("html").classList.add("scrollRock");
-      } else {
-        document.querySelector("html").classList.remove("scrollRock");
-      }
-    }
-  },
-  data: () => ({
-    logMessage: '',
-    // isBookmark: [],
-  }),
   methods: {
-    showProductDetail(productDetail) {
-      this.setProductDetail(productDetail);
-      this.$emit('showProductDetail');
-    },
-    setProductDetail(productDetail) {
+    modalShow(productDetail) {
       this.$store.commit('setProductsDetail', productDetail);
+      this.$store.commit('setModalShow', true);
     },
 
     // 북마크 등록 & 삭제
-    async addBookmark($event, product) {
-      $event.target.classList
+    async setBookmark($event, product) {
 
+      if( !this.isLogin ) {
+        alert('로그인 해주세요.');
+        this.$router.push('/login');
+        return;
+      }
       const isActive = $event.target.classList.contains('active');
       if(isActive) {
         $event.target.classList.remove('active');
-        await deleteBookmark(product.itemSeq);
+        await this.$store.dispatch('DELETE_BOOKMARKS', product);
       } else {
         $event.target.classList.add('active');
-        await addBookmark(product);
+        await this.$store.dispatch('ADD_BOOKMARKS', product);
       }
     },
   }
@@ -140,6 +132,7 @@ export default {
 
   #list li .ico .bookmark.active {
     background-image: url(/public/ico-bookmark-on.svg);
+    opacity: 1;
   }
 
   #nodata {
