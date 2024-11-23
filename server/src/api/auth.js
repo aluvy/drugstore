@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import bcryptjs from 'bcryptjs';
 import { Router } from 'express';
 

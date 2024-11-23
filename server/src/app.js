@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // libs
 require('dotenv').config(); // .env 파일 로드
 

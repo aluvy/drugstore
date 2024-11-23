@@ -4,8 +4,6 @@ import router from '@/routes/index.js';
 import store from '@/store/index.js';
 
 import '@mdi/font/css/materialdesignicons.css';
-import 'vuetify/styles';
-// import vuetify from './plugins/vuetify';
 import { loadFonts } from './plugins/webfontloader';
 
 // Vuetify

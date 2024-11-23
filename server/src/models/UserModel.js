@@ -15,33 +15,20 @@ const userSchema = new mongoose.Schema(
 		password: {
 			type: String,
 			required: true,
-			// trim: true,
-			// minlength: 10,
 		},
 		nickname: {
 			type: String,
-			// required: true,
-			// trim: true,
-			// minlength: 10,
 		},
 		email: {
 			type: String,
-			// required: true,
 			trim: true,
 			unique: true, // 중복을 허용하지 않는다.
 		},
 		insertedDate: { type: Date, default: Date.now },
-
-		// token: {
-		// 	type: String,
-		// },
-		// tokenExp: {
-		// 	type: Number,
-		// },
 	},
 	schemaOptions
 );
 
-const UserModel = mongoose.model('Users', userSchema); // 스키마를 모델로 감싼다.
+const UserModel = mongoose.model('Users', userSchema);
 
 export default UserModel;

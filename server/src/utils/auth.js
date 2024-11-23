@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // json related
 import jwt from 'jsonwebtoken';
 import { SECRET_KEY, EXPIRATION_DATE } from '../config';
